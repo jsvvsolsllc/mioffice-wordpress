@@ -43,13 +43,16 @@ The plugin embeds MiOffice applications via responsive iframes. Each application
 
 == Usage ==
 
-**Embed a single application:**
+**Embed a single application (opens in new tab):**
 
 `[mioffice tool="merge-pdf"]`
 
-**Custom dimensions:**
+**Inline iframe mode (embed directly on page):**
 
-`[mioffice tool="compress-image" width="100%" height="600"]`
+`[mioffice tool="merge-pdf" mode="iframe"]`
+`[mioffice tool="compress-image" mode="iframe" height="600"]`
+
+Note: iframe mode requires the MiOffice server to allow embedding. The default card mode always works.
 
 **Show all applications in a category as a grid:**
 

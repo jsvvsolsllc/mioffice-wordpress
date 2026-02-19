@@ -82,6 +82,7 @@ function mioffice_shortcode( $atts ) {
             'category' => '',
             'width'    => '100%',
             'height'   => '800',
+            'mode'     => 'card',  // 'card' (default, always works) or 'iframe' (requires X-Frame-Options config)
         ),
         $atts,
         'mioffice'
@@ -89,7 +90,7 @@ function mioffice_shortcode( $atts ) {
 
     $tools = mioffice_get_tools();
 
-    // Single tool embed via iframe
+    // Single tool embed
     if ( ! empty( $atts['tool'] ) ) {
         $slug = sanitize_text_field( $atts['tool'] );
 
@@ -99,28 +100,49 @@ function mioffice_shortcode( $atts ) {
 
         $tool     = $tools[ $slug ];
         $url      = esc_url( MIOFFICE_SUITE_BASE_URL . '/tools/' . $tool['category'] . '/' . $slug );
-        $width    = esc_attr( $atts['width'] );
-        $height   = intval( $atts['height'] );
         $name     = esc_html( $tool['name'] );
 
+        // iframe mode (opt-in)
+        if ( $atts['mode'] === 'iframe' ) {
+            $width  = esc_attr( $atts['width'] );
+            $height = intval( $atts['height'] );
+
+            return sprintf(
+                '<div class="mioffice-embed" style="width:%s;margin:1em auto;">
+                    <iframe
+                        src="%s"
+                        width="100%%"
+                        height="%dpx"
+                        style="border:1px solid #e5e7eb;border-radius:12px;"
+                        loading="lazy"
+                        allow="camera;clipboard-write"
+                        title="%s — MiOffice"
+                    ></iframe>
+                    <p style="text-align:center;margin-top:8px;font-size:13px;color:#6b7280;">
+                        Powered by <a href="%s" target="_blank" rel="noopener noreferrer" style="color:#0B65C2;">MiOffice</a> — files never leave your browser
+                    </p>
+                </div>',
+                $width,
+                $url,
+                $height,
+                $name,
+                esc_url( MIOFFICE_SUITE_BASE_URL )
+            );
+        }
+
+        // Card mode (default — always works, opens in new tab)
         return sprintf(
-            '<div class="mioffice-embed" style="width:%s;margin:1em auto;">
-                <iframe
-                    src="%s"
-                    width="100%%"
-                    height="%dpx"
-                    style="border:1px solid #e5e7eb;border-radius:12px;"
-                    loading="lazy"
-                    allow="camera;clipboard-write"
-                    title="%s — MiOffice"
-                ></iframe>
-                <p style="text-align:center;margin-top:8px;font-size:13px;color:#6b7280;">
-                    Powered by <a href="%s" target="_blank" rel="noopener noreferrer" style="color:#0B65C2;">MiOffice</a> — files never leave your browser
+            '<div class="mioffice-card" style="max-width:400px;margin:1em auto;">
+                <a href="%s" target="_blank" rel="noopener noreferrer" style="display:block;padding:24px;border:2px solid #e5e7eb;border-radius:12px;text-decoration:none;color:#111827;text-align:center;transition:border-color 0.2s,box-shadow 0.2s;" onmouseover="this.style.borderColor=\'#0B65C2\';this.style.boxShadow=\'0 4px 12px rgba(11,101,194,0.15)\'" onmouseout="this.style.borderColor=\'#e5e7eb\';this.style.boxShadow=\'none\'">
+                    <strong style="display:block;font-size:18px;margin-bottom:6px;color:#0B65C2;">%s</strong>
+                    <span style="display:block;font-size:14px;color:#6b7280;margin-bottom:12px;">Process files in your browser — nothing gets uploaded</span>
+                    <span style="display:inline-block;padding:8px 20px;background:#0B65C2;color:#fff;border-radius:8px;font-size:14px;font-weight:600;">Open Application &rarr;</span>
+                </a>
+                <p style="text-align:center;margin-top:8px;font-size:12px;color:#9ca3af;">
+                    Powered by <a href="%s" target="_blank" rel="noopener noreferrer" style="color:#0B65C2;">MiOffice</a>
                 </p>
             </div>',
-            $width,
             $url,
-            $height,
             $name,
             esc_url( MIOFFICE_SUITE_BASE_URL )
         );
