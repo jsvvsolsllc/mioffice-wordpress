@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       MiOffice Suite
+ * Plugin Name:       JSVV File Tools by MiOffice
  * Plugin URI:        https://mioffice.ai
- * Description:       Embed MiOffice browser-based PDF, image, video, and AI applications on any WordPress page or post using shortcodes. Files never leave the visitor's browser.
+ * Description:       Embed browser-based PDF, image, video, and AI file processing tools on any WordPress page or post using shortcodes. Powered by MiOffice — files never leave the visitor's browser.
  * Version:           1.0.0
  * Requires at least: 5.0
  * Requires PHP:      7.4
@@ -10,7 +10,7 @@
  * Author URI:        https://jsvvsols.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       mioffice-suite
+ * Text Domain:       jsvv-file-tools
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -207,10 +207,10 @@ add_shortcode( 'mioffice', 'mioffice_shortcode' );
  */
 function mioffice_admin_menu() {
     add_options_page(
-        'MiOffice Suite',
-        'MiOffice Suite',
+        'JSVV File Tools',
+        'JSVV File Tools',
         'manage_options',
-        'mioffice-suite',
+        'jsvv-file-tools',
         'mioffice_settings_page'
     );
 }
@@ -223,8 +223,8 @@ function mioffice_settings_page() {
     $tools = mioffice_get_tools();
     ?>
     <div class="wrap">
-        <h1>MiOffice Suite</h1>
-        <p>Embed MiOffice browser-based applications on any page or post using shortcodes.</p>
+        <h1>JSVV File Tools by MiOffice</h1>
+        <p>Embed browser-based file processing tools powered by MiOffice on any page or post using shortcodes.</p>
 
         <h2>Usage</h2>
         <p>Add a shortcode to any page or post:</p>
